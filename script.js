@@ -1310,11 +1310,64 @@ function toggleMobileMenu() {
     }
 }
 
+/* ==================== SCROLL REVEAL OBSERVER ==================== */
+function initScrollReveal() {
+    const reveals = document.querySelectorAll('.reveal-on-scroll');
+    if (!reveals.length) return;
+
+    if (!('IntersectionObserver' in window)) {
+        reveals.forEach(el => el.classList.add('is-revealed'));
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-revealed');
+                obs.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.12,
+        rootMargin: '0px 0px -40px 0px'
+    });
+
+    reveals.forEach(el => observer.observe(el));
+}
+
+/* ==================== ZARZĄDZANIE COOKIES ==================== */
+function checkCookieConsent() {
+    const banner = document.getElementById('cookie-banner');
+    if (!banner) return;
+    const consent = localStorage.getItem('tommi_ink_cookies_accepted');
+    if (!consent) {
+        setTimeout(() => {
+            banner.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                banner.classList.remove('translate-y-full', 'opacity-0');
+            });
+        }, 1200);
+    }
+}
+
+function acceptCookies() {
+    localStorage.setItem('tommi_ink_cookies_accepted', 'true');
+    const banner = document.getElementById('cookie-banner');
+    if (banner) {
+        banner.classList.add('translate-y-full', 'opacity-0');
+        setTimeout(() => {
+            banner.classList.add('hidden');
+        }, 500);
+    }
+}
+
 /* ==================== INICJALIZACJA STARTOWA ==================== */
 document.addEventListener('DOMContentLoaded', () => {
     ensureInitialDemoData();
     initAmbientSmoke();
     initFaqAccordion();
+    initScrollReveal();
+    checkCookieConsent();
     selectStyleCard('surrealism');
     renderCalendar();
     checkAdminRoute();
@@ -1334,3 +1387,4 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'ArrowLeft') prevLightboxImage();
     });
 });
+

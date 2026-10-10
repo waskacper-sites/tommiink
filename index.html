@@ -77,6 +77,22 @@
     <!-- GŁÓWNY WIDOK KLIENTA -->
     <div id="client-view-container" class="relative z-10 min-h-screen flex flex-col">
 
+        <!-- ==================== BANER COOKIES ==================== -->
+        <div id="cookie-banner" class="fixed bottom-6 left-6 right-6 max-w-md mx-auto sm:mx-0 sm:left-6 z-50 luxury-card-gold border border-amber-500/35 rounded-2xl p-5 shadow-2xl backdrop-blur-xl flex flex-col gap-3 transition-all duration-500 translate-y-full opacity-0 hidden">
+            <div class="flex items-start gap-3">
+                <div class="w-9 h-9 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 flex-shrink-0 mt-0.5">
+                    <i class="fa-solid fa-cookie-bite text-base"></i>
+                </div>
+                <p class="text-xs text-zinc-300 leading-relaxed">
+                    Strona korzysta z plików cookies i pamięci podręcznej przeglądarki, aby zapewnić płynne działanie kalendarza rezerwacji oraz panelu klienta.
+                </p>
+            </div>
+            <div class="flex items-center justify-end gap-3 pt-1">
+                <button onclick="openPrivacyModal()" class="text-xs text-zinc-400 hover:text-amber-300 underline">Więcej informacji</button>
+                <button onclick="acceptCookies()" class="btn-gold px-5 py-2 rounded-xl text-xs uppercase tracking-wider font-bold">Zgoda</button>
+            </div>
+        </div>
+
         <!-- ==================== STICKY NAVBAR ==================== -->
         <header id="main-nav" class="sticky top-0 z-40 bg-[#0a0a0d]/90 backdrop-blur-xl border-b border-amber-500/15 transition-all duration-300">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -99,7 +115,7 @@
                     <!-- Uproszczone Menu Desktop (Tylko kluczowe zakładki) -->
                     <nav class="hidden md:flex items-center space-x-7 text-sm font-medium text-zinc-300">
                         <a href="#portfolio" class="hover:text-amber-300 transition duration-150">Prace</a>
-                        <a href="#benefits" class="hover:text-amber-300 transition duration-150">Dlaczego my</a>
+                        <a href="#benefits" class="hover:text-amber-300 transition duration-150">Dlaczego strona</a>
                         <a href="#rezerwacja" class="hover:text-amber-300 transition duration-150">Rezerwacja</a>
                         <a href="#testimonials" class="hover:text-amber-300 transition duration-150">Opinie</a>
                         <a href="#faq" class="hover:text-amber-300 transition duration-150">FAQ</a>
@@ -133,7 +149,7 @@
             <!-- Mobile Drawer (Uproszczone pozycje) -->
             <div id="mobile-drawer" class="hidden md:hidden bg-[#0c0c10] border-b border-amber-500/20 px-4 pt-3 pb-6 space-y-3">
                 <a href="#portfolio" onclick="toggleMobileMenu()" class="block py-2 text-base text-zinc-300 hover:text-amber-300 border-b border-zinc-800/60">Portfolio prac</a>
-                <a href="#benefits" onclick="toggleMobileMenu()" class="block py-2 text-base text-zinc-300 hover:text-amber-300 border-b border-zinc-800/60">Dlaczego warto rezerwować</a>
+                <a href="#benefits" onclick="toggleMobileMenu()" class="block py-2 text-base text-zinc-300 hover:text-amber-300 border-b border-zinc-800/60">Dlaczego strona WWW</a>
                 <a href="#rezerwacja" onclick="toggleMobileMenu()" class="block py-2 text-base text-amber-300 font-semibold border-b border-zinc-800/60">Kalendarz Rezerwacji 24/7</a>
                 <a href="#testimonials" onclick="toggleMobileMenu()" class="block py-2 text-base text-zinc-300 hover:text-amber-300 border-b border-zinc-800/60">Opinie Google (4.9 ★)</a>
                 <a href="#faq" onclick="toggleMobileMenu()" class="block py-2 text-base text-zinc-300 hover:text-amber-300 border-b border-zinc-800/60">Najczęstsze pytania</a>
@@ -157,7 +173,7 @@
             <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-amber-500/10 rounded-full blur-[130px] pointer-events-none"></div>
 
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div class="text-center max-w-4xl mx-auto">
+                <div class="text-center max-w-4xl mx-auto reveal-on-scroll">
                     <!-- Badge nagłówkowy -->
                     <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full vintage-badge text-xs font-semibold uppercase tracking-wider mb-6">
                         <i class="fa-solid fa-gem text-amber-400"></i>
@@ -189,7 +205,7 @@
                     <!-- 3 KAFELKI ZAUFANIA (Połączona lokalizacja i standard autorski dla maksymalnej czytelności) -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto">
                         <!-- Kafelek 1: Opinie -->
-                        <div class="luxury-card-gold p-5 rounded-2xl text-left flex flex-col justify-between">
+                        <div class="luxury-card-gold p-5 rounded-2xl text-left flex flex-col justify-between reveal-on-scroll reveal-delay-1">
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-amber-400 text-xs font-serif-clean uppercase tracking-wider font-semibold">Ocena Google</span>
                                 <div class="flex text-amber-400 text-xs">
@@ -211,7 +227,7 @@
                         </div>
 
                         <!-- Kafelek 2: Połączona Lokalizacja i Standard Autorski -->
-                        <div class="luxury-card-gold p-5 rounded-2xl text-left flex flex-col justify-between">
+                        <div class="luxury-card-gold p-5 rounded-2xl text-left flex flex-col justify-between reveal-on-scroll reveal-delay-2">
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-amber-400 text-xs font-serif-clean uppercase tracking-wider font-semibold">Studio & Lokalizacja</span>
                                 <div class="flex items-center gap-2 text-amber-400 text-xs">
@@ -232,7 +248,7 @@
                         </div>
 
                         <!-- Kafelek 3 (Czwarty): Zapisy 24/7 -->
-                        <div class="luxury-card-gold p-5 rounded-2xl text-left flex flex-col justify-between">
+                        <div class="luxury-card-gold p-5 rounded-2xl text-left flex flex-col justify-between reveal-on-scroll reveal-delay-3">
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-amber-400 text-xs font-serif-clean uppercase tracking-wider font-semibold">Zapisy Online</span>
                                 <i class="fa-solid fa-clock text-amber-400 text-sm"></i>
@@ -254,7 +270,7 @@
         <!-- ==================== PORTFOLIO PRAC ==================== -->
         <section id="portfolio" class="py-20 relative border-t border-amber-500/15">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6 reveal-on-scroll">
                     <div>
                         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full vintage-badge text-xs font-semibold uppercase tracking-wider mb-4">
                             <i class="fa-brands fa-instagram text-amber-400"></i>
@@ -276,7 +292,7 @@
                 <!-- Siatka portfolio -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     <!-- Praca 1: Surrealizm & Rzeźba -->
-                    <div class="luxury-card-gold rounded-2xl overflow-hidden group cursor-pointer relative" onclick="openLightbox(0)">
+                    <div class="luxury-card-gold rounded-2xl overflow-hidden group cursor-pointer relative reveal-on-scroll reveal-delay-1" onclick="openLightbox(0)">
                         <div class="aspect-[3/4] overflow-hidden bg-black relative">
                             <img src="portfolio-1.jpg" alt="Surrealistyczny tatuaż Dawid i pęknięta czaszka - Tomasz Derza" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-95 transition"></div>
@@ -292,7 +308,7 @@
                     </div>
 
                     <!-- Praca 2: Smok na Dłoni -->
-                    <div class="luxury-card-gold rounded-2xl overflow-hidden group cursor-pointer relative" onclick="openLightbox(1)">
+                    <div class="luxury-card-gold rounded-2xl overflow-hidden group cursor-pointer relative reveal-on-scroll reveal-delay-2" onclick="openLightbox(1)">
                         <div class="aspect-[3/4] overflow-hidden bg-black relative">
                             <img src="portfolio-2.jpg" alt="Tatuaż japoński smok black & grey na dłoni - Tomasz Derza" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-95 transition"></div>
@@ -308,7 +324,7 @@
                     </div>
 
                     <!-- Praca 3: Orientalny Smok na Plecach z Księżycem -->
-                    <div class="luxury-card-gold rounded-2xl overflow-hidden group cursor-pointer relative" onclick="openLightbox(2)">
+                    <div class="luxury-card-gold rounded-2xl overflow-hidden group cursor-pointer relative reveal-on-scroll reveal-delay-3" onclick="openLightbox(2)">
                         <div class="aspect-[3/4] overflow-hidden bg-black relative">
                             <img src="portfolio-3.png" alt="Tatuaż smoka wznoszącego się ku księżycowi na plecach - Tomasz Derza" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-95 transition"></div>
@@ -324,7 +340,7 @@
                     </div>
 
                     <!-- Praca 4: Delikatna Flora Fine-Line -->
-                    <div class="luxury-card-gold rounded-2xl overflow-hidden group cursor-pointer relative" onclick="openLightbox(3)">
+                    <div class="luxury-card-gold rounded-2xl overflow-hidden group cursor-pointer relative reveal-on-scroll reveal-delay-4" onclick="openLightbox(3)">
                         <div class="aspect-[3/4] overflow-hidden bg-black relative">
                             <img src="portfolio-4.png" alt="Delikatna gałązka kwiatowa fine line na stopie - Tomasz Derza" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-95 transition"></div>
@@ -342,60 +358,64 @@
             </div>
         </section>
 
-        <!-- ==================== DLACZEGO WARTO REZERWOWAĆ ==================== -->
+        <!-- ==================== DLACZEGO WARTO MIEĆ STRONĘ WWW ==================== -->
         <section id="benefits" class="py-20 bg-zinc-950/60 border-t border-b border-amber-500/15">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center max-w-3xl mx-auto mb-14">
+                <div class="text-center max-w-3xl mx-auto mb-14 reveal-on-scroll">
                     <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full vintage-badge text-xs font-semibold uppercase tracking-wider mb-4">
-                        <i class="fa-solid fa-bolt text-amber-400"></i>
-                        <span>Komfort i Wygoda</span>
+                        <i class="fa-solid fa-globe text-amber-400"></i>
+                        <span>Wizerunek & Automatyzacja</span>
                     </div>
                     <h2 class="font-vintage text-3xl sm:text-4xl font-bold mb-3">
-                        Dlaczego Warto Rezerwować <span class="text-gold-gradient">Online?</span>
+                        Dlaczego Warto Mieć <span class="text-gold-gradient">Stronę WWW?</span>
                     </h2>
                     <p class="text-zinc-400 text-sm">
-                        Bezpośredni wybór terminu, pewna rezerwacja i przesłanie inspiracji do projektu w jednym miejscu.
+                        Profesjonalna strona to nie tylko prestiż, ale realna oszczędność czasu tatuatora i wygoda dla każdego klienta.
                     </p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="luxury-card-gold p-6 rounded-2xl">
+                    <!-- Kafel 1: Zapisy 24/7 -->
+                    <div class="luxury-card-gold p-6 rounded-2xl reveal-on-scroll reveal-delay-1">
                         <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
-                            <i class="fa-solid fa-calendar-days"></i>
+                            <i class="fa-solid fa-calendar-check"></i>
                         </div>
-                        <h4 class="font-vintage text-base font-bold text-white mb-2">Kalendarz 24/7</h4>
+                        <h4 class="font-vintage text-base font-bold text-white mb-2">Rezerwacja 24/7</h4>
                         <p class="text-xs text-zinc-400 leading-relaxed">
-                            Podgląd realnych wolnych terminów. Zapisujesz się w dogodnej chwili bez czekania na wiadomość zwrotną.
+                            Klienci zapisują się o dowolnej porze, także w nocy czy w weekendy – bez czekania na Twoją odpowiedź w wiadomości prywatnej.
                         </p>
                     </div>
 
-                    <div class="luxury-card-gold p-6 rounded-2xl">
+                    <!-- Kafel 2: Oszczędność czasu i mniej spamu -->
+                    <div class="luxury-card-gold p-6 rounded-2xl reveal-on-scroll reveal-delay-2">
                         <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
-                            <i class="fa-solid fa-shield-check"></i>
+                            <i class="fa-solid fa-circle-check"></i>
                         </div>
-                        <h4 class="font-vintage text-base font-bold text-white mb-2">Gwarancja Terminu</h4>
+                        <h4 class="font-vintage text-base font-bold text-white mb-2">Mniej Spamu w DM</h4>
                         <p class="text-xs text-zinc-400 leading-relaxed">
-                            Otrzymujesz unikalny identyfikator wizyty, a wybrana godzina zostaje zablokowana wyłącznie dla Ciebie.
+                            Koniec z niekończącymi się pytaniami o wolne terminy i cennik na Instagramie. Wszystkie informacje i wzory trafiają od razu w jedno miejsce.
                         </p>
                     </div>
 
-                    <div class="luxury-card-gold p-6 rounded-2xl">
+                    <!-- Kafel 3: Wizerunek i Prestiż -->
+                    <div class="luxury-card-gold p-6 rounded-2xl reveal-on-scroll reveal-delay-3">
                         <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
-                            <i class="fa-solid fa-images"></i>
+                            <i class="fa-solid fa-gem"></i>
                         </div>
-                        <h4 class="font-vintage text-base font-bold text-white mb-2">Przesyłanie Wzorów</h4>
+                        <h4 class="font-vintage text-base font-bold text-white mb-2">Prestiż & Zaufanie</h4>
                         <p class="text-xs text-zinc-400 leading-relaxed">
-                            Możesz załączyć zdjęcia inspiracji w formularzu – artysta zapozna się z nimi przed wizytą w studio.
+                            Własna, dopracowana strona internetowa wyróżnia studio z tłumu i buduje wizerunek artysty klasy premium już przy pierwszym kontakcie.
                         </p>
                     </div>
 
-                    <div class="luxury-card-gold p-6 rounded-2xl">
+                    <!-- Kafel 4: Więcej Klientów z Google -->
+                    <div class="luxury-card-gold p-6 rounded-2xl reveal-on-scroll reveal-delay-4">
                         <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
-                            <i class="fa-solid fa-clock-rotate-left"></i>
+                            <i class="fa-solid fa-chart-line"></i>
                         </div>
-                        <h4 class="font-vintage text-base font-bold text-white mb-2">Oszczędność Czasu</h4>
+                        <h4 class="font-vintage text-base font-bold text-white mb-2">Klienci z Google</h4>
                         <p class="text-xs text-zinc-400 leading-relaxed">
-                            Brak długich dyskusji w DM na Instagramie. Wszystkie dane i preferencje trafiają od razu do systemu studia.
+                            Osoby szukające tatuażu w Nowym Sączu przez wyszukiwarkę trafią bezpośrednio na Twoje portfolio i kalendarz rezerwacji.
                         </p>
                     </div>
                 </div>
@@ -406,7 +426,7 @@
         <section id="rezerwacja" class="py-20 bg-zinc-950/80 border-t border-b border-amber-500/20 relative">
             <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                 
-                <div class="text-center max-w-2xl mx-auto mb-12">
+                <div class="text-center max-w-2xl mx-auto mb-12 reveal-on-scroll">
                     <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full vintage-badge text-xs font-semibold uppercase tracking-wider mb-4">
                         <i class="fa-solid fa-calendar-check text-amber-400"></i>
                         <span>Rezerwacja Sesji Online</span>
@@ -420,7 +440,7 @@
                 </div>
 
                 <!-- Kontener Główny Wizarda -->
-                <div class="luxury-card-gold rounded-3xl p-6 sm:p-10 border border-amber-500/30">
+                <div class="luxury-card-gold rounded-3xl p-6 sm:p-10 border border-amber-500/30 reveal-on-scroll reveal-delay-1">
                     
                     <!-- Stepper (Pasek Postępu) -->
                     <div class="mb-10">
@@ -838,7 +858,7 @@
         <!-- ==================== OPINIE Z GOOGLE (TESTIMONIALS) ==================== -->
         <section id="testimonials" class="py-20 relative">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center max-w-3xl mx-auto mb-16">
+                <div class="text-center max-w-3xl mx-auto mb-16 reveal-on-scroll">
                     <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full vintage-badge text-xs font-semibold uppercase tracking-wider mb-4">
                         <i class="fa-solid fa-star text-amber-400"></i>
                         <span>Prawdziwe Doświadczenia</span>
@@ -863,7 +883,7 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <!-- Opinia 1: Sabina Varley -->
-                    <div class="luxury-card-gold p-6 rounded-2xl flex flex-col justify-between">
+                    <div class="luxury-card-gold p-6 rounded-2xl flex flex-col justify-between reveal-on-scroll reveal-delay-1">
                         <div>
                             <div class="flex items-center justify-between mb-4">
                                 <div class="flex text-amber-400 text-xs">
@@ -891,7 +911,7 @@
                     </div>
 
                     <!-- Opinia 2: Ania Cygan -->
-                    <div class="luxury-card-gold p-6 rounded-2xl flex flex-col justify-between">
+                    <div class="luxury-card-gold p-6 rounded-2xl flex flex-col justify-between reveal-on-scroll reveal-delay-2">
                         <div>
                             <div class="flex items-center justify-between mb-4">
                                 <div class="flex text-amber-400 text-xs">
@@ -919,7 +939,7 @@
                     </div>
 
                     <!-- Opinia 3: Kamil Skrobot -->
-                    <div class="luxury-card-gold p-6 rounded-2xl flex flex-col justify-between">
+                    <div class="luxury-card-gold p-6 rounded-2xl flex flex-col justify-between reveal-on-scroll reveal-delay-3">
                         <div>
                             <div class="flex items-center justify-between mb-4">
                                 <div class="flex text-amber-400 text-xs">
@@ -952,7 +972,7 @@
         <!-- ==================== FAQ (AKORDEON) ==================== -->
         <section id="faq" class="py-20 bg-zinc-950/70 border-t border-b border-amber-500/15">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-14">
+                <div class="text-center mb-14 reveal-on-scroll">
                     <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full vintage-badge text-xs font-semibold uppercase tracking-wider mb-4">
                         <i class="fa-solid fa-circle-question text-amber-400"></i>
                         <span>Najczęstsze Pytania</span>
@@ -967,7 +987,7 @@
 
                 <div class="space-y-4" id="faq-accordion-container">
                     <!-- Pytanie 1 -->
-                    <details class="faq-item luxury-card-gold rounded-2xl overflow-hidden border border-zinc-800">
+                    <details class="faq-item luxury-card-gold rounded-2xl overflow-hidden border border-zinc-800 reveal-on-scroll">
                         <summary class="p-5 sm:p-6 cursor-pointer flex items-center justify-between text-left select-none">
                             <span class="font-vintage text-base font-bold text-white pr-4">Jak przygotować się do sesji tatuażu?</span>
                             <div class="w-8 h-8 rounded-lg bg-zinc-900 border border-amber-500/30 flex items-center justify-center text-amber-300 flex-shrink-0">
@@ -980,7 +1000,7 @@
                     </details>
 
                     <!-- Pytanie 2 -->
-                    <details class="faq-item luxury-card-gold rounded-2xl overflow-hidden border border-zinc-800">
+                    <details class="faq-item luxury-card-gold rounded-2xl overflow-hidden border border-zinc-800 reveal-on-scroll">
                         <summary class="p-5 sm:p-6 cursor-pointer flex items-center justify-between text-left select-none">
                             <span class="font-vintage text-base font-bold text-white pr-4">Czy muszę mieć gotowy projekt przed rezerwacją?</span>
                             <div class="w-8 h-8 rounded-lg bg-zinc-900 border border-amber-500/30 flex items-center justify-center text-amber-300 flex-shrink-0">
@@ -993,7 +1013,7 @@
                     </details>
 
                     <!-- Pytanie 3 -->
-                    <details class="faq-item luxury-card-gold rounded-2xl overflow-hidden border border-zinc-800">
+                    <details class="faq-item luxury-card-gold rounded-2xl overflow-hidden border border-zinc-800 reveal-on-scroll">
                         <summary class="p-5 sm:p-6 cursor-pointer flex items-center justify-between text-left select-none">
                             <span class="font-vintage text-base font-bold text-white pr-4">Jak dbać o tatuaż po wykonaniu?</span>
                             <div class="w-8 h-8 rounded-lg bg-zinc-900 border border-amber-500/30 flex items-center justify-center text-amber-300 flex-shrink-0">
@@ -1006,7 +1026,7 @@
                     </details>
 
                     <!-- Pytanie 4 -->
-                    <details class="faq-item luxury-card-gold rounded-2xl overflow-hidden border border-zinc-800">
+                    <details class="faq-item luxury-card-gold rounded-2xl overflow-hidden border border-zinc-800 reveal-on-scroll">
                         <summary class="p-5 sm:p-6 cursor-pointer flex items-center justify-between text-left select-none">
                             <span class="font-vintage text-base font-bold text-white pr-4">Czy studio wykonuje piercing lub laserowe usuwanie?</span>
                             <div class="w-8 h-8 rounded-lg bg-zinc-900 border border-amber-500/30 flex items-center justify-center text-amber-300 flex-shrink-0">
@@ -1019,7 +1039,7 @@
                     </details>
 
                     <!-- Pytanie 5 -->
-                    <details class="faq-item luxury-card-gold rounded-2xl overflow-hidden border border-zinc-800">
+                    <details class="faq-item luxury-card-gold rounded-2xl overflow-hidden border border-zinc-800 reveal-on-scroll">
                         <summary class="p-5 sm:p-6 cursor-pointer flex items-center justify-between text-left select-none">
                             <span class="font-vintage text-base font-bold text-white pr-4">Gdzie dokładnie mieści się studio i jakie są godziny?</span>
                             <div class="w-8 h-8 rounded-lg bg-zinc-900 border border-amber-500/30 flex items-center justify-center text-amber-300 flex-shrink-0">
@@ -1040,7 +1060,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
                     
                     <!-- Dane kontaktowe -->
-                    <div class="lg:col-span-5 space-y-6">
+                    <div class="lg:col-span-5 space-y-6 reveal-on-scroll">
                         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full vintage-badge text-xs font-semibold uppercase tracking-wider">
                             <i class="fa-solid fa-location-arrow text-amber-400"></i>
                             <span>Odwiedź Nasze Studio</span>
@@ -1102,7 +1122,7 @@
                     </div>
 
                     <!-- Mapa / Lokalizacja Embed -->
-                    <div class="lg:col-span-7">
+                    <div class="lg:col-span-7 reveal-on-scroll">
                         <div class="luxury-card-gold rounded-3xl overflow-hidden p-2 border border-amber-500/30 shadow-2xl">
                             <div class="aspect-[16/10] w-full rounded-2xl overflow-hidden bg-zinc-900 relative">
                                 <iframe 
