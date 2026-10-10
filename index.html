@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="pl" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOMMI INK - Tomasz Derza | Ekskluzywne Studio Tatuażu Nowy Sącz</title>
+    <meta name="description" content="Autorskie studio tatuażu w Nowym Sączu przy ul. Jagiellońskiej 29. Surrealizm, mikrorealizm, orientalne smoki black & grey oraz fine-line. Zarezerwuj termin 24/7 online.">
+    <link rel="icon" type="image/png" href="logo.png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            50: '#fbf8eb',
+                            100: '#f5eecb',
+                            200: '#ebd998',
+                            300: '#dfbf61',
+                            400: '#d4af37',
+                            500: '#b89224',
+                            600: '#946f1a',
+                            700: '#735217',
+                            800: '#5e4219',
+                            900: '#4e3719'
+                        },
+                        dark: {
+                            950: '#060608',
+                            900: '#0a0a0d',
+                            850: '#111116',
+                            800: '#181820',
+                            700: '#22222d'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#0a0a0d] text-zinc-100 antialiased selection:bg-amber-500/25 selection:text-amber-200">
+
+    <!-- Subtelna mgła w tle (Ambient Canvas) -->
+    <canvas id="ambient-canvas"></canvas>
+
+    <!-- ==================== GÓRNY PASEK DEMO ==================== -->
+    <div id="demo-bar" class="relative z-50 bg-gradient-to-r from-amber-950/90 via-zinc-950 to-amber-950/90 border-b border-amber-500/30 text-xs py-2 px-4 shadow-lg backdrop-blur-md">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
+            <div class="flex items-center gap-2">
+                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse mr-1.5"></span>
+                    PROJEKT PREVIEW
+                </span>
+                <span class="text-zinc-300 text-xs">
+                    Wersja demonstracyjna strony przygotowana dla studia <strong class="text-amber-300 font-semibold">TOMMI INK - Tomasz Derza</strong>
+                </span>
+            </div>
+            <button onclick="openDemoContactModal()" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-amber-500/15 hover:bg-amber-500/25 text-amber-200 border border-amber-500/40 text-xs font-medium transition duration-200 cursor-pointer">
+                <i class="fa-solid fa-paper-plane text-[10px] text-amber-400"></i>
+                <span>Skontaktuj się w sprawie strony</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- GŁÓWNY WIDOK KLIENTA -->
+    <div id="client-view-container" class="relative z-10 min-h-screen flex flex-col">
+
+        <!-- ==================== STICKY NAVBAR ==================== -->
+        <header id="main-nav" class="sticky top-0 z-40 bg-[#0a0a0d]/90 backdrop-blur-xl border-b border-amber-500/15 transition-all duration-300">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-20">
+                    <!-- Logo i Brand (Kwadratowy emblemat zachowany bez zniekształcenia) -->
+                    <a href="#" class="flex items-center gap-3.5 group">
+                        <div class="relative w-14 h-14 rounded-xl overflow-hidden border border-amber-500/35 p-1 bg-black/80 shadow-[0_0_15px_rgba(212,175,55,0.2)] group-hover:border-amber-400 transition flex items-center justify-center flex-shrink-0">
+                            <img src="logo.png" alt="TOMMI INK - Tattoo Studio Nowy Sącz" class="w-full h-full object-contain filter brightness-110">
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="font-vintage text-xl font-bold tracking-wider text-amber-300 group-hover:text-amber-200 transition">
+                                TOMMI INK
+                            </span>
+                            <span class="text-[10px] uppercase tracking-widest text-zinc-400 -mt-1 font-serif-clean">
+                                Tomasz Derza • Nowy Sącz
+                            </span>
+                        </div>
+                    </a>
+
+                    <!-- Uproszczone Menu Desktop (Tylko kluczowe zakładki) -->
+                    <nav class="hidden md:flex items-center space-x-7 text-sm font-medium text-zinc-300">
+                        <a href="#portfolio" class="hover:text-amber-300 transition duration-150">Prace</a>
+                        <a href="#benefits" class="hover:text-amber-300 transition duration-150">Dlaczego my</a>
+                        <a href="#rezerwacja" class="hover:text-amber-300 transition duration-150">Rezerwacja</a>
+                        <a href="#testimonials" class="hover:text-amber-300 transition duration-150">Opinie</a>
+                        <a href="#faq" class="hover:text-amber-300 transition duration-150">FAQ</a>
+                        <a href="#contact" class="hover:text-amber-300 transition duration-150">Kontakt</a>
+                    </nav>
+
+                    <!-- Prawa sekcja (Telefon & CTA) -->
+                    <div class="hidden lg:flex items-center gap-4">
+                        <a href="tel:+48607554060" class="flex items-center gap-2 text-xs font-semibold text-zinc-300 hover:text-amber-300 px-3 py-2 rounded-lg bg-zinc-900/60 border border-zinc-800 hover:border-amber-500/40 transition">
+                            <i class="fa-solid fa-phone text-amber-400"></i>
+                            <span>607 554 060</span>
+                        </a>
+                        <a href="#rezerwacja" class="btn-gold px-5 py-2.5 rounded-xl text-xs uppercase tracking-wider font-bold inline-flex items-center gap-2">
+                            <span>Zarezerwuj Wizytę</span>
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </a>
+                    </div>
+
+                    <!-- Hamburger Button Mobilny -->
+                    <div class="flex items-center md:hidden gap-2">
+                        <a href="tel:+48607554060" class="p-2.5 rounded-lg bg-zinc-900 border border-amber-500/30 text-amber-300" aria-label="Zadzwoń do studia">
+                            <i class="fa-solid fa-phone text-sm"></i>
+                        </a>
+                        <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="p-2.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-amber-300" aria-label="Menu nawigacji">
+                            <i id="mobile-menu-icon" class="fa-solid fa-bars text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Drawer (Uproszczone pozycje) -->
+            <div id="mobile-drawer" class="hidden md:hidden bg-[#0c0c10] border-b border-amber-500/20 px-4 pt-3 pb-6 space-y-3">
+                <a href="#portfolio" onclick="toggleMobileMenu()" class="block py-2 text-base text-zinc-300 hover:text-amber-300 border-b border-zinc-800/60">Portfolio prac</a>
+                <a href="#benefits" onclick="toggleMobileMenu()" class="block py-2 text-base text-zinc-300 hover:text-amber-300 border-b border-zinc-800/60">Dlaczego warto rezerwować</a>
+                <a href="#rezerwacja" onclick="toggleMobileMenu()" class="block py-2 text-base text-amber-300 font-semibold border-b border-zinc-800/60">Kalendarz Rezerwacji 24/7</a>
+                <a href="#testimonials" onclick="toggleMobileMenu()" class="block py-2 text-base text-zinc-300 hover:text-amber-300 border-b border-zinc-800/60">Opinie Google (4.9 ★)</a>
+                <a href="#faq" onclick="toggleMobileMenu()" class="block py-2 text-base text-zinc-300 hover:text-amber-300 border-b border-zinc-800/60">Najczęstsze pytania</a>
+                <a href="#contact" onclick="toggleMobileMenu()" class="block py-2 text-base text-zinc-300 hover:text-amber-300">Kontakt i dojazd</a>
+
+                <div class="pt-3 flex flex-col gap-2">
+                    <a href="tel:+48607554060" class="flex items-center justify-center gap-2 py-3 rounded-xl bg-zinc-900 border border-amber-500/40 text-amber-300 font-semibold text-sm">
+                        <i class="fa-solid fa-phone"></i>
+                        <span>Zadzwoń: 607 554 060</span>
+                    </a>
+                    <a href="#rezerwacja" onclick="toggleMobileMenu()" class="btn-gold py-3 rounded-xl text-center text-sm font-bold">
+                        Zarezerwuj Sesję Online
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- ==================== HERO SECTION ==================== -->
+        <section class="relative pt-12 pb-20 lg:pt-20 lg:pb-28 overflow-hidden">
+            <!-- Blask w tle -->
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-amber-500/10 rounded-full blur-[130px] pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center max-w-4xl mx-auto">
+                    <!-- Badge nagłówkowy -->
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full vintage-badge text-xs font-semibold uppercase tracking-wider mb-6">
+                        <i class="fa-solid fa-gem text-amber-400"></i>
+                        <span>Studio Tatuażu Autorskiego • Nowy Sącz</span>
+                    </div>
+
+                    <!-- Tytuł główny -->
+                    <h1 class="font-vintage text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight sm:leading-tight mb-6">
+                        Sztuka Tatuażu z Dbałością o <span class="text-gold-gradient">Każdy Detal</span>
+                    </h1>
+
+                    <!-- Skrócony, konkretny podtytuł -->
+                    <p class="text-base sm:text-lg text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed font-light">
+                        Tomasz Derza – autorskie tatuaże surrealistyczne, orientalne smoki black & grey oraz fine-line w centrum Nowego Sącza przy ul. Jagiellońskiej 29.
+                    </p>
+
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+                        <a href="#rezerwacja" class="w-full sm:w-auto btn-gold px-8 py-4 rounded-xl text-sm font-bold uppercase tracking-wider inline-flex items-center justify-center gap-3">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <span>Zarezerwuj Termin Online</span>
+                        </a>
+                        <a href="#portfolio" class="w-full sm:w-auto px-8 py-4 rounded-xl text-sm font-semibold tracking-wider text-zinc-200 bg-zinc-900/80 hover:bg-zinc-800 border border-amber-500/25 hover:border-amber-500/50 inline-flex items-center justify-center gap-2 transition duration-200">
+                            <i class="fa-solid fa-images text-amber-400"></i>
+                            <span>Zobacz Portfolio Prac</span>
+                        </a>
+                    </div>
+
+                    <!-- 3 KAFELKI ZAUFANIA (Połączona lokalizacja i standard autorski dla maksymalnej czytelności) -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto">
+                        <!-- Kafelek 1: Opinie -->
+                        <div class="luxury-card-gold p-5 rounded-2xl text-left flex flex-col justify-between">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-amber-400 text-xs font-serif-clean uppercase tracking-wider font-semibold">Ocena Google</span>
+                                <div class="flex text-amber-400 text-xs">
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-2xl sm:text-3xl font-black text-white font-vintage">
+                                    4.9 <span class="text-amber-400 text-lg font-serif-clean">★</span>
+                                </div>
+                                <p class="text-xs text-zinc-400 mt-1">
+                                    23 zweryfikowane opinie
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Kafelek 2: Połączona Lokalizacja i Standard Autorski -->
+                        <div class="luxury-card-gold p-5 rounded-2xl text-left flex flex-col justify-between">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-amber-400 text-xs font-serif-clean uppercase tracking-wider font-semibold">Studio & Lokalizacja</span>
+                                <div class="flex items-center gap-2 text-amber-400 text-xs">
+                                    <i class="fa-solid fa-crown"></i>
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-xl sm:text-2xl font-bold text-white font-vintage leading-tight">
+                                    ul. Jagiellońska 29
+                                </div>
+                                <p class="text-xs text-zinc-300 mt-1 flex items-center gap-1.5 flex-wrap">
+                                    <span class="text-amber-300 font-semibold">Nowy Sącz</span>
+                                    <span class="text-zinc-500">•</span>
+                                    <span>100% autorskie projekty</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Kafelek 3 (Czwarty): Zapisy 24/7 -->
+                        <div class="luxury-card-gold p-5 rounded-2xl text-left flex flex-col justify-between">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-amber-400 text-xs font-serif-clean uppercase tracking-wider font-semibold">Zapisy Online</span>
+                                <i class="fa-solid fa-clock text-amber-400 text-sm"></i>
+                            </div>
+                            <div>
+                                <div class="text-2xl sm:text-3xl font-black text-white font-vintage">
+                                    24 / 7
+                                </div>
+                                <p class="text-xs text-zinc-400 mt-1">
+                                    Kalendarz wolnych terminów
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PORTFOLIO PRAC ==================== -->
+        <section id="portfolio" class="py-20 relative border-t border-amber-500/15">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full vintage-badge text-xs font-semibold uppercase tracking-wider mb-4">
+                            <i class="fa-brands fa-instagram text-amber-400"></i>
+                            <span>Realizacje Tomasza Derzy</span>
+                        </div>
+                        <h2 class="font-vintage text-3xl sm:text-4xl font-bold">
+                            Galeria Wybranych <span class="text-gold-gradient">Dzieł</span>
+                        </h2>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <a href="https://www.instagram.com/tommi_ink/" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-900/40 to-pink-900/40 border border-purple-500/30 text-purple-200 hover:text-white text-xs font-semibold inline-flex items-center gap-2 transition">
+                            <i class="fa-brands fa-instagram text-pink-400"></i>
+                            <span>Obserwuj @tommi_ink</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Siatka portfolio -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Praca 1: Surrealizm & Rzeźba -->
+                    <div class="luxury-card-gold rounded-2xl overflow-hidden group cursor-pointer relative" onclick="openLightbox(0)">
+                        <div class="aspect-[3/4] overflow-hidden bg-black relative">
+                            <img src="portfolio-1.jpg" alt="Surrealistyczny tatuaż Dawid i pęknięta czaszka - Tomasz Derza" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-95 transition"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-5">
+                                <span class="text-[10px] uppercase font-serif-clean tracking-widest text-amber-300 font-semibold">Surrealizm & Geometria</span>
+                                <h4 class="font-vintage text-sm font-bold text-white mt-0.5">Klasyczna Rzeźba & Pęknięta Czaszka</h4>
+                                <p class="text-[11px] text-zinc-400 mt-1 line-clamp-2">Głębia mikro-cieniowania i detali rzeźbiarskich.</p>
+                            </div>
+                            <div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-amber-500/40 flex items-center justify-center text-amber-300 opacity-0 group-hover:opacity-100 transition">
+                                <i class="fa-solid fa-expand text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Praca 2: Smok na Dłoni -->
+                    <div class="luxury-card-gold rounded-2xl overflow-hidden group cursor-pointer relative" onclick="openLightbox(1)">
+                        <div class="aspect-[3/4] overflow-hidden bg-black relative">
+                            <img src="portfolio-2.jpg" alt="Tatuaż japoński smok black & grey na dłoni - Tomasz Derza" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-95 transition"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-5">
+                                <span class="text-[10px] uppercase font-serif-clean tracking-widest text-amber-300 font-semibold">Black & Grey Hand</span>
+                                <h4 class="font-vintage text-sm font-bold text-white mt-0.5">Japoński Smok na Dłoni</h4>
+                                <p class="text-[11px] text-zinc-400 mt-1 line-clamp-2">Idealne dopasowanie łuski do anatomii grzbietu dłoni.</p>
+                            </div>
+                            <div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-amber-500/40 flex items-center justify-center text-amber-300 opacity-0 group-hover:opacity-100 transition">
+                                <i class="fa-solid fa-expand text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Praca 3: Orientalny Smok na Plecach z Księżycem -->
+                    <div class="luxury-card-gold rounded-2xl overflow-hidden group cursor-pointer relative" onclick="openLightbox(2)">
+                        <div class="aspect-[3/4] overflow-hidden bg-black relative">
+                            <img src="portfolio-3.png" alt="Tatuaż smoka wznoszącego się ku księżycowi na plecach - Tomasz Derza" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-95 transition"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-5">
+                                <span class="text-[10px] uppercase font-serif-clean tracking-widest text-amber-300 font-semibold">Oriental Linework</span>
+                                <h4 class="font-vintage text-sm font-bold text-white mt-0.5">Smok Ku Pełni Księżyca</h4>
+                                <p class="text-[11px] text-zinc-400 mt-1 line-clamp-2">Płynna pionowa kompozycja pleców z subtelnym półcieniem.</p>
+                            </div>
+                            <div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-amber-500/40 flex items-center justify-center text-amber-300 opacity-0 group-hover:opacity-100 transition">
+                                <i class="fa-solid fa-expand text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Praca 4: Delikatna Flora Fine-Line -->
+                    <div class="luxury-card-gold rounded-2xl overflow-hidden group cursor-pointer relative" onclick="openLightbox(3)">
+                        <div class="aspect-[3/4] overflow-hidden bg-black relative">
+                            <img src="portfolio-4.png" alt="Delikatna gałązka kwiatowa fine line na stopie - Tomasz Derza" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-95 transition"></div>
+                            <div class="absolute bottom-0 left-0 right-0 p-5">
+                                <span class="text-[10px] uppercase font-serif-clean tracking-widest text-amber-300 font-semibold">Fine-Line Flora</span>
+                                <h4 class="font-vintage text-sm font-bold text-white mt-0.5">Gałązka Roślinna na Stopie</h4>
+                                <p class="text-[11px] text-zinc-400 mt-1 line-clamp-2">Ultracienka kreska i kobieca harmonia na stopie.</p>
+                            </div>
+                            <div class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-md border border-amber-500/40 flex items-center justify-center text-amber-300 opacity-0 group-hover:opacity-100 transition">
+                                <i class="fa-solid fa-expand text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== DLACZEGO WARTO REZERWOWAĆ ==================== -->
+        <section id="benefits" class="py-20 bg-zinc-950/60 border-t border-b border-amber-500/15">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-14">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full vintage-badge text-xs font-semibold uppercase tracking-wider mb-4">
+                        <i class="fa-solid fa-bolt text-amber-400"></i>
+                        <span>Komfort i Wygoda</span>
+                    </div>
+                    <h2 class="font-vintage text-3xl sm:text-4xl font-bold mb-3">
+                        Dlaczego Warto Rezerwować <span class="text-gold-gradient">Online?</span>
+                    </h2>
+                    <p class="text-zinc-400 text-sm">
+                        Bezpośredni wybór terminu, pewna rezerwacja i przesłanie inspiracji do projektu w jednym miejscu.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="luxury-card-gold p-6 rounded-2xl">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
+                            <i class="fa-solid fa-calendar-days"></i>
+                        </div>
+                        <h4 class="font-vintage text-base font-bold text-white mb-2">Kalendarz 24/7</h4>
+                        <p class="text-xs text-zinc-400 leading-relaxed">
+                            Podgląd realnych wolnych terminów. Zapisujesz się w dogodnej chwili bez czekania na wiadomość zwrotną.
+                        </p>
+                    </div>
+
+                    <div class="luxury-card-gold p-6 rounded-2xl">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
+                            <i class="fa-solid fa-shield-check"></i>
+                        </div>
+                        <h4 class="font-vintage text-base font-bold text-white mb-2">Gwarancja Terminu</h4>
+                        <p class="text-xs text-zinc-400 leading-relaxed">
+                            Otrzymujesz unikalny identyfikator wizyty, a wybrana godzina zostaje zablokowana wyłącznie dla Ciebie.
+                        </p>
+                    </div>
+
+                    <div class="luxury-card-gold p-6 rounded-2xl">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
+                            <i class="fa-solid fa-images"></i>
+                        </div>
+                        <h4 class="font-vintage text-base font-bold text-white mb-2">Przesyłanie Wzorów</h4>
+                        <p class="text-xs text-zinc-400 leading-relaxed">
+                            Możesz załączyć zdjęcia inspiracji w formularzu – artysta zapozna się z nimi przed wizytą w studio.
+                        </p>
+                    </div>
+
+                    <div class="luxury-card-gold p-6 rounded-2xl">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                        </div>
+                        <h4 class="font-vintage text-base font-bold text-white mb-2">Oszczędność Czasu</h4>
+                        <p class="text-xs text-zinc-400 leading-relaxed">
+                            Brak długich dyskusji w DM na Instagramie. Wszystkie dane i preferencje trafiają od razu do systemu studia.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== INTERAKTYWNY KREATOR REZERWACJI (WIZARD) ==================== -->
+        <section id="rezerwacja" class="py-20 bg-zinc-950/80 border-t border-b border-amber-500/20 relative">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full vintage-badge text-xs font-semibold uppercase tracking-wider mb-4">
+                        <i class="fa-solid fa-calendar-check text-amber-400"></i>
+                        <span>Rezerwacja Sesji Online</span>
+                    </div>
+                    <h2 class="font-vintage text-3xl sm:text-4xl font-bold mb-3">
+                        Zarezerwuj Swój <span class="text-gold-gradient">Termin</span>
+                    </h2>
+                    <p class="text-zinc-400 text-xs sm:text-sm">
+                        Wybierz styl, termin w interaktywnym kalendarzu i opisz swój pomysł.
+                    </p>
+                </div>
+
+                <!-- Kontener Główny Wizarda -->
+                <div class="luxury-card-gold rounded-3xl p-6 sm:p-10 border border-amber-500/30">
+                    
+                    <!-- Stepper (Pasek Postępu) -->
+                    <div class="mb-10">
+                        <div class="grid grid-cols-4 gap-2 text-center">
+                            <!-- Krok 1 -->
+                            <div id="step-indicator-1" class="flex flex-col items-center">
+                                <div class="step-badge w-9 h-9 rounded-full bg-amber-500 text-black font-bold text-xs flex items-center justify-center border-2 border-amber-300 shadow-[0_0_15px_rgba(212,175,55,0.4)]">
+                                    1
+                                </div>
+                                <span class="step-label text-[11px] font-semibold text-amber-300 mt-2 truncate w-full">Styl & Pomysł</span>
+                            </div>
+                            <!-- Krok 2 -->
+                            <div id="step-indicator-2" class="flex flex-col items-center">
+                                <div class="step-badge w-9 h-9 rounded-full bg-zinc-800 text-zinc-400 font-bold text-xs flex items-center justify-center border border-zinc-700">
+                                    2
+                                </div>
+                                <span class="step-label text-[11px] font-medium text-zinc-500 mt-2 truncate w-full">Termin</span>
+                            </div>
+                            <!-- Krok 3 -->
+                            <div id="step-indicator-3" class="flex flex-col items-center">
+                                <div class="step-badge w-9 h-9 rounded-full bg-zinc-800 text-zinc-400 font-bold text-xs flex items-center justify-center border border-zinc-700">
+                                    3
+                                </div>
+                                <span class="step-label text-[11px] font-medium text-zinc-500 mt-2 truncate w-full">Twoje Dane</span>
+                            </div>
+                            <!-- Krok 4 -->
+                            <div id="step-indicator-4" class="flex flex-col items-center">
+                                <div class="step-badge w-9 h-9 rounded-full bg-zinc-800 text-zinc-400 font-bold text-xs flex items-center justify-center border border-zinc-700">
+                                    4
+                                </div>
+                                <span class="step-label text-[11px] font-medium text-zinc-500 mt-2 truncate w-full">Podsumowanie</span>
+                            </div>
+                        </div>
+                        <!-- Pasek wizualny -->
+                        <div class="w-full bg-zinc-800 h-1.5 rounded-full mt-4 overflow-hidden">
+                            <div id="wizard-progress-bar" class="h-full bg-gradient-to-r from-amber-500 to-amber-300 transition-all duration-300 w-1/4"></div>
+                        </div>
+                    </div>
+
+                    <!-- ================= KROK 1: WYBÓR STYLU & OPIS ================= -->
+                    <div id="wizard-step-1" class="wizard-step-content space-y-8">
+                        <div>
+                            <label class="block text-sm font-semibold text-zinc-200 mb-3 font-serif-clean uppercase tracking-wider">
+                                1. Wybierz styl tatuażu / usługę <span class="text-amber-400">*</span>
+                            </label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                                <div class="service-select-card p-4 rounded-xl cursor-pointer" onclick="selectStyleCard('surrealism')">
+                                    <input type="radio" name="booking-style" value="surrealism" id="style-surrealism" class="hidden">
+                                    <div class="flex items-center justify-between">
+                                        <div class="font-vintage text-sm font-bold text-white">Surrealizm & Mikrorealizm</div>
+                                        <i class="fa-solid fa-brain text-amber-400 text-sm"></i>
+                                    </div>
+                                    <p class="text-[11px] text-zinc-400 mt-1">Czaszki, rzeźby, geometria i głębokie mikro-detale.</p>
+                                </div>
+
+                                <div class="service-select-card p-4 rounded-xl cursor-pointer" onclick="selectStyleCard('blackgrey')">
+                                    <input type="radio" name="booking-style" value="blackgrey" id="style-blackgrey" class="hidden">
+                                    <div class="flex items-center justify-between">
+                                        <div class="font-vintage text-sm font-bold text-white">Black & Grey (Smoki & Realizm)</div>
+                                        <i class="fa-solid fa-dragon text-amber-400 text-sm"></i>
+                                    </div>
+                                    <p class="text-[11px] text-zinc-400 mt-1">Japońskie smoki, motywy orientalne i pełne cieniowanie.</p>
+                                </div>
+
+                                <div class="service-select-card p-4 rounded-xl cursor-pointer" onclick="selectStyleCard('fineline')">
+                                    <input type="radio" name="booking-style" value="fineline" id="style-fineline" class="hidden">
+                                    <div class="flex items-center justify-between">
+                                        <div class="font-vintage text-sm font-bold text-white">Fine-Line & Linework</div>
+                                        <i class="fa-solid fa-feather-pointed text-amber-400 text-sm"></i>
+                                    </div>
+                                    <p class="text-[11px] text-zinc-400 mt-1">Cienkie, eleganckie linie, flora, subtelne kontury.</p>
+                                </div>
+
+                                <div class="service-select-card p-4 rounded-xl cursor-pointer" onclick="selectStyleCard('konsultacja')">
+                                    <input type="radio" name="booking-style" value="konsultacja" id="style-konsultacja" class="hidden">
+                                    <div class="flex items-center justify-between">
+                                        <div class="font-vintage text-sm font-bold text-white">Konsultacja & Projekt</div>
+                                        <i class="fa-solid fa-comments text-amber-400 text-sm"></i>
+                                    </div>
+                                    <p class="text-[11px] text-zinc-400 mt-1">Spotkanie w studio przy Jagiellońskiej 29 i omówienie koncepcji.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Umiejscowienie i Orientacyjny Rozmiar -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="booking-placement" class="block text-xs font-semibold text-zinc-300 mb-2 uppercase tracking-wider font-serif-clean">
+                                    Miejsce na ciele <span class="text-amber-400">*</span>
+                                </label>
+                                <input type="text" id="booking-placement" placeholder="np. przedramię, dłoń, plecy, udo..." class="w-full px-4 py-3 rounded-xl bg-black/60 border border-zinc-800 focus:border-amber-500/60 focus:outline-none text-sm text-zinc-200 placeholder-zinc-600 transition">
+                            </div>
+
+                            <div>
+                                <label for="booking-size" class="block text-xs font-semibold text-zinc-300 mb-2 uppercase tracking-wider font-serif-clean">
+                                    Orientacyjny rozmiar <span class="text-amber-400">*</span>
+                                </label>
+                                <select id="booking-size" class="w-full px-4 py-3 rounded-xl bg-black/60 border border-zinc-800 focus:border-amber-500/60 focus:outline-none text-sm text-zinc-200 transition">
+                                    <option value="" disabled selected>Wybierz rozmiar</option>
+                                    <option value="Mały (do 8 cm)">Mały (do 8 cm) - subtelny detal</option>
+                                    <option value="Średni (10 - 18 cm)">Średni (10 - 18 cm) - przedramię, łydka</option>
+                                    <option value="Duży (20+ cm)">Duży (20+ cm) - cały rękaw, plecy, udo</option>
+                                    <option value="Do ustalenia podczas konsultacji">Do ustalenia na konsultacji</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Opis pomysłu -->
+                        <div>
+                            <label for="booking-description" class="block text-xs font-semibold text-zinc-300 mb-2 uppercase tracking-wider font-serif-clean">
+                                Opis Twojego pomysłu <span class="text-amber-400">*</span>
+                            </label>
+                            <textarea id="booking-description" rows="3" placeholder="Opisz motyw lub elementy, które chciałbyś zawrzeć w projekcie..." class="w-full px-4 py-3 rounded-xl bg-black/60 border border-zinc-800 focus:border-amber-500/60 focus:outline-none text-sm text-zinc-200 placeholder-zinc-600 transition"></textarea>
+                        </div>
+
+                        <!-- Zdjęcia referencyjne / inspiracje (Canvas Kompresja) -->
+                        <div>
+                            <label class="block text-xs font-semibold text-zinc-300 mb-2 uppercase tracking-wider font-serif-clean">
+                                Zdjęcia inspiracji / referencje (opcjonalnie)
+                            </label>
+                            <div class="border-2 border-dashed border-zinc-800 hover:border-amber-500/50 rounded-2xl p-6 text-center bg-black/30 transition cursor-pointer" onclick="document.getElementById('booking-photo-input').click()">
+                                <input type="file" id="booking-photo-input" accept="image/*" class="hidden" onchange="handlePhotoUpload(event)">
+                                <i class="fa-solid fa-cloud-arrow-up text-2xl text-amber-400/80 mb-2"></i>
+                                <p class="text-xs text-zinc-300 font-medium">Kliknij, aby dodać zdjęcie inspiracji</p>
+                                <p class="text-[10px] text-zinc-500 mt-1">Pliki JPG, PNG (kompresowane do podglądu)</p>
+                            </div>
+
+                            <!-- Podgląd wgranego zdjęcia -->
+                            <div id="photo-preview-container" class="hidden mt-3 p-3 rounded-xl bg-black/60 border border-amber-500/30 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <img id="photo-preview-thumb" src="" alt="Podgląd inspiracji" class="w-12 h-12 rounded-lg object-cover border border-amber-500/40">
+                                    <div>
+                                        <div class="text-xs font-medium text-white truncate max-w-[200px]" id="photo-file-name">zdjęcie.jpg</div>
+                                        <div class="text-[10px] text-emerald-400">Załadowano pomyślnie</div>
+                                    </div>
+                                </div>
+                                <button type="button" onclick="removeUploadedPhoto()" class="text-zinc-400 hover:text-rose-400 p-2" title="Usuń zdjęcie">
+                                    <i class="fa-solid fa-trash-can text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Nawigacja Krok 1 -->
+                        <div class="pt-4 flex justify-end">
+                            <button type="button" onclick="goToStep(2)" class="btn-gold px-8 py-3.5 rounded-xl text-xs uppercase tracking-wider font-bold inline-flex items-center gap-2">
+                                <span>Przejdź do Wyboru Terminu</span>
+                                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ================= KROK 2: WYBÓR TERMINU W KALENDARZU ================= -->
+                    <div id="wizard-step-2" class="wizard-step-content space-y-6 hidden">
+                        <div>
+                            <h3 class="font-serif-clean text-sm font-bold uppercase tracking-wider text-amber-300 mb-1">
+                                2. Wybierz termin i godzinę sesji
+                            </h3>
+                            <p class="text-xs text-zinc-400">
+                                Harmonogram studia: Pon–Pt 10:00–18:00, Sob 10:00–14:00, Nd zamknięte.
+                            </p>
+                        </div>
+
+                        <!-- 2 Kolumny: Lewa Kalendarz, Prawa Wolne Godziny -->
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                            
+                            <!-- Lewa kolumna: Kalendarz Miesięczny + Legenda -->
+                            <div class="lg:col-span-7 bg-black/50 border border-zinc-800 rounded-2xl p-5">
+                                <!-- Pasek nawigacji miesiąca -->
+                                <div class="flex items-center justify-between mb-4">
+                                    <button type="button" onclick="changeMonth(-1)" class="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-amber-400 text-zinc-300 flex items-center justify-center transition">
+                                        <i class="fa-solid fa-chevron-left text-xs"></i>
+                                    </button>
+                                    <div id="calendar-month-year" class="font-vintage text-base font-bold text-amber-300">
+                                        Październik 2026
+                                    </div>
+                                    <button type="button" onclick="changeMonth(1)" class="w-9 h-9 rounded-lg bg-zinc-900 border border-zinc-700 hover:border-amber-400 text-zinc-300 flex items-center justify-center transition">
+                                        <i class="fa-solid fa-chevron-right text-xs"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Dni tygodnia nagłówki -->
+                                <div class="grid grid-cols-7 gap-1 text-center mb-2">
+                                    <span class="text-[11px] font-semibold text-zinc-500 py-1">Pn</span>
+                                    <span class="text-[11px] font-semibold text-zinc-500 py-1">Wt</span>
+                                    <span class="text-[11px] font-semibold text-zinc-500 py-1">Śr</span>
+                                    <span class="text-[11px] font-semibold text-zinc-500 py-1">Cz</span>
+                                    <span class="text-[11px] font-semibold text-zinc-500 py-1">Pt</span>
+                                    <span class="text-[11px] font-semibold text-amber-500/80 py-1">Sb</span>
+                                    <span class="text-[11px] font-semibold text-rose-500/70 py-1">Nd</span>
+                                </div>
+
+                                <!-- Siatka dni generowana przez JS -->
+                                <div id="calendar-days-grid" class="grid grid-cols-7 gap-1 text-center">
+                                    <!-- Renderowane dynamicznie -->
+                                </div>
+
+                                <!-- Legenda dostępności -->
+                                <div class="mt-5 pt-4 border-t border-zinc-800/80 flex flex-wrap items-center justify-between gap-2 text-[10px] text-zinc-400">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                        <span>Wolne godziny</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                                        <span>Ostatnie wolne sloty</span>
+                                    </div>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                                        <span>Brak wolnych miejsc</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Prawa kolumna: Szczegóły wybranego dnia i sloty godzinowe -->
+                            <div class="lg:col-span-5 bg-black/50 border border-zinc-800 rounded-2xl p-5 flex flex-col justify-between min-h-[340px]">
+                                <div>
+                                    <div class="flex items-center justify-between mb-3 border-b border-zinc-800/80 pb-3">
+                                        <div>
+                                            <span class="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Wybrany dzień</span>
+                                            <div id="selected-date-display" class="font-vintage text-base font-bold text-white mt-0.5">
+                                                Wybierz dzień w kalendarzu
+                                            </div>
+                                        </div>
+                                        <i class="fa-regular fa-clock text-amber-400 text-lg"></i>
+                                    </div>
+
+                                    <div id="day-schedule-note" class="text-[11px] text-zinc-400 mb-4 bg-zinc-900/60 p-2.5 rounded-xl border border-zinc-800/60">
+                                        Kliknij na dostępny dzień po lewej stronie, aby wyświetlić wolne sloty godzinowe.
+                                    </div>
+
+                                    <!-- Kontener na kafelki godzin -->
+                                    <div id="time-slots-container" class="grid grid-cols-2 gap-2">
+                                        <!-- Renderowane dynamicznie w JS z oznaczeniem (Zajęty) -->
+                                    </div>
+                                </div>
+
+                                <div id="selected-slot-summary" class="hidden mt-4 pt-3 border-t border-zinc-800/80 text-xs text-amber-300 font-medium">
+                                    Wybrany termin: <span id="summary-slot-text" class="text-white font-bold"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Nawigacja Krok 2 -->
+                        <div class="pt-4 flex items-center justify-between">
+                            <button type="button" onclick="goToStep(1)" class="px-6 py-3 rounded-xl border border-zinc-800 hover:border-zinc-700 text-xs text-zinc-400 hover:text-white uppercase tracking-wider font-semibold transition">
+                                <i class="fa-solid fa-arrow-left mr-1.5 text-[10px]"></i>
+                                <span>Wróć</span>
+                            </button>
+                            <button type="button" onclick="goToStep(3)" class="btn-gold px-8 py-3.5 rounded-xl text-xs uppercase tracking-wider font-bold inline-flex items-center gap-2">
+                                <span>Przejdź do Danych</span>
+                                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ================= KROK 3: DANE KONTAKTOWE ================= -->
+                    <div id="wizard-step-3" class="wizard-step-content space-y-6 hidden">
+                        <div>
+                            <h3 class="font-serif-clean text-sm font-bold uppercase tracking-wider text-amber-300 mb-1">
+                                3. Wprowadź dane kontaktowe do potwierdzenia
+                            </h3>
+                            <p class="text-xs text-zinc-400">
+                                Na podany numer telefonu i adres e-mail wyślemy potwierdzenie rezerwacji.
+                            </p>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="contact-name" class="block text-xs font-semibold text-zinc-300 mb-2 uppercase tracking-wider font-serif-clean">
+                                    Imię i Nazwisko <span class="text-amber-400">*</span>
+                                </label>
+                                <input type="text" id="contact-name" placeholder="Jan Kowalski" class="w-full px-4 py-3 rounded-xl bg-black/60 border border-zinc-800 focus:border-amber-500/60 focus:outline-none text-sm text-zinc-200 placeholder-zinc-600 transition">
+                            </div>
+
+                            <div>
+                                <label for="contact-phone" class="block text-xs font-semibold text-zinc-300 mb-2 uppercase tracking-wider font-serif-clean">
+                                    Numer Telefonu <span class="text-amber-400">*</span>
+                                </label>
+                                <div class="flex">
+                                    <span class="inline-flex items-center px-3.5 rounded-l-xl border border-r-0 border-zinc-800 bg-zinc-900 text-zinc-400 text-xs font-semibold">
+                                        +48
+                                    </span>
+                                    <input type="tel" id="contact-phone" placeholder="607 000 000" class="w-full px-4 py-3 rounded-r-xl bg-black/60 border border-zinc-800 focus:border-amber-500/60 focus:outline-none text-sm text-zinc-200 placeholder-zinc-600 transition">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="contact-email" class="block text-xs font-semibold text-zinc-300 mb-2 uppercase tracking-wider font-serif-clean">
+                                    Adres E-mail <span class="text-amber-400">*</span>
+                                </label>
+                                <input type="email" id="contact-email" placeholder="jan.kowalski@example.com" class="w-full px-4 py-3 rounded-xl bg-black/60 border border-zinc-800 focus:border-amber-500/60 focus:outline-none text-sm text-zinc-200 placeholder-zinc-600 transition">
+                            </div>
+
+                            <div>
+                                <label for="contact-instagram" class="block text-xs font-semibold text-zinc-300 mb-2 uppercase tracking-wider font-serif-clean">
+                                    Profil Instagram (opcjonalnie)
+                                </label>
+                                <div class="flex">
+                                    <span class="inline-flex items-center px-3 rounded-l-xl border border-r-0 border-zinc-800 bg-zinc-900 text-zinc-400 text-xs">
+                                        @
+                                    </span>
+                                    <input type="text" id="contact-instagram" placeholder="twoj_nick" class="w-full px-4 py-3 rounded-r-xl bg-black/60 border border-zinc-800 focus:border-amber-500/60 focus:outline-none text-sm text-zinc-200 placeholder-zinc-600 transition">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dodatkowe uwagi -->
+                        <div>
+                            <label for="contact-notes" class="block text-xs font-semibold text-zinc-300 mb-2 uppercase tracking-wider font-serif-clean">
+                                Dodatkowe uwagi lub pytania do artysty (opcjonalnie)
+                            </label>
+                            <textarea id="contact-notes" rows="2" placeholder="np. to mój pierwszy tatuaż, mam niski próg bólu..." class="w-full px-4 py-3 rounded-xl bg-black/60 border border-zinc-800 focus:border-amber-500/60 focus:outline-none text-sm text-zinc-200 placeholder-zinc-600 transition"></textarea>
+                        </div>
+
+                        <!-- Zgoda RODO -->
+                        <div class="pt-2">
+                            <label class="flex items-start gap-3 cursor-pointer">
+                                <input type="checkbox" id="consent-checkbox" class="mt-1 w-4 h-4 rounded border-zinc-700 bg-zinc-900 text-amber-500 focus:ring-amber-400">
+                                <span class="text-xs text-zinc-400 leading-relaxed">
+                                    Wyrażam zgodę na przetwarzanie moich danych osobowych w celu realizacji i potwierdzenia rezerwacji w studio tatuażu TOMMI INK. Zapoznałem się z <a href="javascript:void(0)" onclick="openPrivacyModal()" class="text-amber-300 underline">Polityką Prywatności</a>.
+                                </span>
+                            </label>
+                        </div>
+
+                        <!-- Nawigacja Krok 3 -->
+                        <div class="pt-4 flex items-center justify-between">
+                            <button type="button" onclick="goToStep(2)" class="px-6 py-3 rounded-xl border border-zinc-800 hover:border-zinc-700 text-xs text-zinc-400 hover:text-white uppercase tracking-wider font-semibold transition">
+                                <i class="fa-solid fa-arrow-left mr-1.5 text-[10px]"></i>
+                                <span>Wróć</span>
+                            </button>
+                            <button type="button" onclick="goToStep(4)" class="btn-gold px-8 py-3.5 rounded-xl text-xs uppercase tracking-wider font-bold inline-flex items-center gap-2">
+                                <span>Przejdź do Podsumowania</span>
+                                <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ================= KROK 4: PODSUMOWANIE I POTWIERDZENIE ================= -->
+                    <div id="wizard-step-4" class="wizard-step-content space-y-6 hidden">
+                        <div>
+                            <h3 class="font-serif-clean text-sm font-bold uppercase tracking-wider text-amber-300 mb-1">
+                                4. Sprawdź i zatwierdź swoją rezerwację
+                            </h3>
+                            <p class="text-xs text-zinc-400">
+                                Upewnij się, że wszystkie dane są poprawne przed wysłaniem formularza.
+                            </p>
+                        </div>
+
+                        <!-- Karta podsumowania -->
+                        <div class="bg-black/60 border border-amber-500/30 rounded-2xl p-6 space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-4 border-b border-zinc-800">
+                                <div>
+                                    <span class="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Wybrana Usługa</span>
+                                    <div id="summary-review-style" class="font-vintage text-base font-bold text-amber-300 mt-0.5">-</div>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Termin & Godzina</span>
+                                    <div id="summary-review-datetime" class="font-vintage text-base font-bold text-white mt-0.5">-</div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pb-4 border-b border-zinc-800">
+                                <div>
+                                    <span class="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Miejsce na ciele</span>
+                                    <div id="summary-review-placement" class="text-xs text-zinc-200 font-medium mt-0.5">-</div>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Rozmiar</span>
+                                    <div id="summary-review-size" class="text-xs text-zinc-200 font-medium mt-0.5">-</div>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Załączona inspiracja</span>
+                                    <div id="summary-review-photo" class="text-xs text-zinc-200 font-medium mt-0.5">Brak zdjęcia</div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pb-4 border-b border-zinc-800">
+                                <div>
+                                    <span class="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Klient</span>
+                                    <div id="summary-review-client" class="text-xs text-zinc-200 font-medium mt-0.5">-</div>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Telefon</span>
+                                    <div id="summary-review-phone" class="text-xs text-zinc-200 font-medium mt-0.5">-</div>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">E-mail</span>
+                                    <div id="summary-review-email" class="text-xs text-zinc-200 font-medium mt-0.5">-</div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span class="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Opis pomysłu</span>
+                                <p id="summary-review-description" class="text-xs text-zinc-300 mt-1 italic leading-relaxed">-</p>
+                            </div>
+                        </div>
+
+                        <!-- Nawigacja Krok 4 -->
+                        <div class="pt-4 flex items-center justify-between">
+                            <button type="button" onclick="goToStep(3)" class="px-6 py-3 rounded-xl border border-zinc-800 hover:border-zinc-700 text-xs text-zinc-400 hover:text-white uppercase tracking-wider font-semibold transition">
+                                <i class="fa-solid fa-arrow-left mr-1.5 text-[10px]"></i>
+                                <span>Wróć</span>
+                            </button>
+                            <button type="button" id="submit-booking-btn" onclick="submitFinalBooking()" class="btn-gold px-10 py-4 rounded-xl text-xs uppercase tracking-wider font-bold inline-flex items-center gap-2">
+                                <i class="fa-solid fa-check text-xs"></i>
+                                <span>Potwierdzam Rezerwację</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== OPINIE Z GOOGLE (TESTIMONIALS) ==================== -->
+        <section id="testimonials" class="py-20 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full vintage-badge text-xs font-semibold uppercase tracking-wider mb-4">
+                        <i class="fa-solid fa-star text-amber-400"></i>
+                        <span>Prawdziwe Doświadczenia</span>
+                    </div>
+                    <h2 class="font-vintage text-3xl sm:text-4xl font-bold mb-4">
+                        Co Mówią Klienci o <span class="text-gold-gradient">TOMMI INK</span>
+                    </h2>
+                    
+                    <!-- Podsumowanie gwiazdek -->
+                    <div class="flex items-center justify-center gap-3 mt-2">
+                        <div class="flex text-amber-400 text-base">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                        </div>
+                        <span class="text-lg font-bold text-white font-vintage">4.9 / 5.0</span>
+                        <span class="text-xs text-zinc-400">(23 opinie w Google)</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Opinia 1: Sabina Varley -->
+                    <div class="luxury-card-gold p-6 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex text-amber-400 text-xs">
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                </div>
+                                <span class="text-[10px] text-zinc-500">10 miesięcy temu</span>
+                            </div>
+                            <p class="text-xs text-zinc-300 leading-relaxed italic mb-6">
+                                "Tomek zna się na rzeczy i naprawdę wykonuje cudowne tatuaże. Do tego jest super facetem z którym można pogadać na różne tematy. Polecam!"
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-3 pt-4 border-t border-zinc-800/80">
+                            <div class="w-9 h-9 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center font-bold text-amber-300 text-xs">
+                                SV
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-white">Sabina Varley</div>
+                                <div class="text-[10px] text-amber-400 font-medium">Lokalny przewodnik • 110 opinii</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Opinia 2: Ania Cygan -->
+                    <div class="luxury-card-gold p-6 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex text-amber-400 text-xs">
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                </div>
+                                <span class="text-[10px] text-zinc-500">rok temu</span>
+                            </div>
+                            <p class="text-xs text-zinc-300 leading-relaxed italic mb-6">
+                                "Bardzo polecam Pana Tomka, bardzo dobrze wykonał mi tatuaż, miła atmosfera i umie dobrze doradzić żeby to ślicznie wyglądało..."
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-3 pt-4 border-t border-zinc-800/80">
+                            <div class="w-9 h-9 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center font-bold text-amber-300 text-xs">
+                                AC
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-white">Ania Cygan</div>
+                                <div class="text-[10px] text-zinc-400">Zweryfikowana opinia</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Opinia 3: Kamil Skrobot -->
+                    <div class="luxury-card-gold p-6 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex text-amber-400 text-xs">
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                    <i class="fa-solid fa-star"></i>
+                                </div>
+                                <span class="text-[10px] text-zinc-500">4 lata temu</span>
+                            </div>
+                            <p class="text-xs text-zinc-300 leading-relaxed italic mb-6">
+                                "Tomek to pełen Profesjonalista w każdym calu dba o każdy najmniejszy szczegół. Mój pierwszy tatuaż został zrobiony przez niego x lat temu i robi wrażenie do dziś, gorąco polecam to studio każdemu kto chce zrobić profesjonalny tatuaż w bardzo miłej atmosferze."
+                            </p>
+                        </div>
+                        <div class="flex items-center gap-3 pt-4 border-t border-zinc-800/80">
+                            <div class="w-9 h-9 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center font-bold text-amber-300 text-xs">
+                                KS
+                            </div>
+                            <div>
+                                <div class="text-xs font-bold text-white">Kamil Skrobot</div>
+                                <div class="text-[10px] text-amber-400 font-medium">Lokalny przewodnik • 36 opinii</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== FAQ (AKORDEON) ==================== -->
+        <section id="faq" class="py-20 bg-zinc-950/70 border-t border-b border-amber-500/15">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-14">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full vintage-badge text-xs font-semibold uppercase tracking-wider mb-4">
+                        <i class="fa-solid fa-circle-question text-amber-400"></i>
+                        <span>Najczęstsze Pytania</span>
+                    </div>
+                    <h2 class="font-vintage text-3xl sm:text-4xl font-bold mb-3">
+                        Wszystko Co Warto <span class="text-gold-gradient">Wiedzieć</span>
+                    </h2>
+                    <p class="text-zinc-400 text-xs sm:text-sm">
+                        Krótkie odpowiedzi na najważniejsze pytania przed pierwszą wizytą.
+                    </p>
+                </div>
+
+                <div class="space-y-4" id="faq-accordion-container">
+                    <!-- Pytanie 1 -->
+                    <details class="faq-item luxury-card-gold rounded-2xl overflow-hidden border border-zinc-800">
+                        <summary class="p-5 sm:p-6 cursor-pointer flex items-center justify-between text-left select-none">
+                            <span class="font-vintage text-base font-bold text-white pr-4">Jak przygotować się do sesji tatuażu?</span>
+                            <div class="w-8 h-8 rounded-lg bg-zinc-900 border border-amber-500/30 flex items-center justify-center text-amber-300 flex-shrink-0">
+                                <i class="fa-solid fa-chevron-down faq-chevron text-xs transition-transform duration-300"></i>
+                            </div>
+                        </summary>
+                        <div class="faq-content px-5 pb-6 sm:px-6 text-xs text-zinc-300 leading-relaxed border-t border-zinc-800/60 pt-4">
+                            Wyśpij się i zjedz syty posiłek przed wizytą. Dzień wcześniej unikaj alkoholu i leków rozrzedzających krew. Ubierz się wygodnie, aby łatwo odsłonić miejsce tatuażu.
+                        </div>
+                    </details>
+
+                    <!-- Pytanie 2 -->
+                    <details class="faq-item luxury-card-gold rounded-2xl overflow-hidden border border-zinc-800">
+                        <summary class="p-5 sm:p-6 cursor-pointer flex items-center justify-between text-left select-none">
+                            <span class="font-vintage text-base font-bold text-white pr-4">Czy muszę mieć gotowy projekt przed rezerwacją?</span>
+                            <div class="w-8 h-8 rounded-lg bg-zinc-900 border border-amber-500/30 flex items-center justify-center text-amber-300 flex-shrink-0">
+                                <i class="fa-solid fa-chevron-down faq-chevron text-xs transition-transform duration-300"></i>
+                            </div>
+                        </summary>
+                        <div class="faq-content px-5 pb-6 sm:px-6 text-xs text-zinc-300 leading-relaxed border-t border-zinc-800/60 pt-4">
+                            Nie. Wystarczy ogólny zarys pomysłu lub zdjęcia referencyjne załączone w formularzu. Tomasz Derza przygotowuje autorski wzór dopasowany do anatomii Twojego ciała.
+                        </div>
+                    </details>
+
+                    <!-- Pytanie 3 -->
+                    <details class="faq-item luxury-card-gold rounded-2xl overflow-hidden border border-zinc-800">
+                        <summary class="p-5 sm:p-6 cursor-pointer flex items-center justify-between text-left select-none">
+                            <span class="font-vintage text-base font-bold text-white pr-4">Jak dbać o tatuaż po wykonaniu?</span>
+                            <div class="w-8 h-8 rounded-lg bg-zinc-900 border border-amber-500/30 flex items-center justify-center text-amber-300 flex-shrink-0">
+                                <i class="fa-solid fa-chevron-down faq-chevron text-xs transition-transform duration-300"></i>
+                            </div>
+                        </summary>
+                        <div class="faq-content px-5 pb-6 sm:px-6 text-xs text-zinc-300 leading-relaxed border-t border-zinc-800/60 pt-4">
+                            Po sesji otrzymasz dokładne wytyczne pielęgnacji oraz opatrunek. Przemywaj skórę łagodnym mydłem, smaruj maścią gojącą i chroń przed słońcem, basenem oraz sauną przez 3–4 tygodnie.
+                        </div>
+                    </details>
+
+                    <!-- Pytanie 4 -->
+                    <details class="faq-item luxury-card-gold rounded-2xl overflow-hidden border border-zinc-800">
+                        <summary class="p-5 sm:p-6 cursor-pointer flex items-center justify-between text-left select-none">
+                            <span class="font-vintage text-base font-bold text-white pr-4">Czy studio wykonuje piercing lub laserowe usuwanie?</span>
+                            <div class="w-8 h-8 rounded-lg bg-zinc-900 border border-amber-500/30 flex items-center justify-center text-amber-300 flex-shrink-0">
+                                <i class="fa-solid fa-chevron-down faq-chevron text-xs transition-transform duration-300"></i>
+                            </div>
+                        </summary>
+                        <div class="faq-content px-5 pb-6 sm:px-6 text-xs text-zinc-300 leading-relaxed border-t border-zinc-800/60 pt-4">
+                            Nie. TOMMI INK koncentruje się w 100% na sztuce tatuażu artystycznego (surrealizm, smoki, cieniowanie black & grey, fine-line).
+                        </div>
+                    </details>
+
+                    <!-- Pytanie 5 -->
+                    <details class="faq-item luxury-card-gold rounded-2xl overflow-hidden border border-zinc-800">
+                        <summary class="p-5 sm:p-6 cursor-pointer flex items-center justify-between text-left select-none">
+                            <span class="font-vintage text-base font-bold text-white pr-4">Gdzie dokładnie mieści się studio i jakie są godziny?</span>
+                            <div class="w-8 h-8 rounded-lg bg-zinc-900 border border-amber-500/30 flex items-center justify-center text-amber-300 flex-shrink-0">
+                                <i class="fa-solid fa-chevron-down faq-chevron text-xs transition-transform duration-300"></i>
+                            </div>
+                        </summary>
+                        <div class="faq-content px-5 pb-6 sm:px-6 text-xs text-zinc-300 leading-relaxed border-t border-zinc-800/60 pt-4">
+                            ul. Jagiellońska 29, 33-300 Nowy Sącz (ścisłe centrum). Pracujemy: Poniedziałek – Piątek 10:00 – 18:00, Sobota 10:00 – 14:00, Niedziela zamknięte.
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== KONTAKT & MAPA ==================== -->
+        <section id="contact" class="py-20 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                    
+                    <!-- Dane kontaktowe -->
+                    <div class="lg:col-span-5 space-y-6">
+                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full vintage-badge text-xs font-semibold uppercase tracking-wider">
+                            <i class="fa-solid fa-location-arrow text-amber-400"></i>
+                            <span>Odwiedź Nasze Studio</span>
+                        </div>
+                        
+                        <h2 class="font-vintage text-3xl sm:text-4xl font-bold leading-tight">
+                            Skontaktuj Się z <span class="text-gold-gradient">Nami</span>
+                        </h2>
+
+                        <p class="text-zinc-400 text-sm leading-relaxed">
+                            Czekamy na Ciebie przy ul. Jagiellońskiej 29 w Nowym Sączu. Rezerwuj termin przez stronę lub zadzwoń bezpośrednio.
+                        </p>
+
+                        <div class="space-y-3 pt-2">
+                            <!-- Telefon -->
+                            <a href="tel:+48607554060" class="luxury-card-gold p-4 rounded-xl flex items-center gap-4 hover:border-amber-400 transition block">
+                                <div class="w-10 h-10 rounded-lg bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 flex-shrink-0">
+                                    <i class="fa-solid fa-phone"></i>
+                                </div>
+                                <div>
+                                    <div class="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Telefon Bezpośredni</div>
+                                    <div class="text-sm font-bold text-white">607 554 060</div>
+                                </div>
+                            </a>
+
+                            <!-- Adres -->
+                            <div class="luxury-card-gold p-4 rounded-xl flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-lg bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 flex-shrink-0">
+                                    <i class="fa-solid fa-location-dot"></i>
+                                </div>
+                                <div>
+                                    <div class="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Adres Studia</div>
+                                    <div class="text-sm font-bold text-white">ul. Jagiellońska 29, 33-300 Nowy Sącz</div>
+                                </div>
+                            </div>
+
+                            <!-- Godziny -->
+                            <div class="luxury-card-gold p-4 rounded-xl flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-lg bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 flex-shrink-0">
+                                    <i class="fa-solid fa-clock"></i>
+                                </div>
+                                <div>
+                                    <div class="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Godziny Otwarcia</div>
+                                    <div class="text-xs font-semibold text-white">Pn–Pt: 10:00–18:00 | Sob: 10:00–14:00</div>
+                                </div>
+                            </div>
+
+                            <!-- Instagram -->
+                            <a href="https://www.instagram.com/tommi_ink/" target="_blank" rel="noopener noreferrer" class="luxury-card-gold p-4 rounded-xl flex items-center gap-4 hover:border-purple-400 transition block">
+                                <div class="w-10 h-10 rounded-lg bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-purple-400 flex-shrink-0">
+                                    <i class="fa-brands fa-instagram"></i>
+                                </div>
+                                <div>
+                                    <div class="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Instagram</div>
+                                    <div class="text-sm font-bold text-white">@tommi_ink</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Mapa / Lokalizacja Embed -->
+                    <div class="lg:col-span-7">
+                        <div class="luxury-card-gold rounded-3xl overflow-hidden p-2 border border-amber-500/30 shadow-2xl">
+                            <div class="aspect-[16/10] w-full rounded-2xl overflow-hidden bg-zinc-900 relative">
+                                <iframe 
+                                    title="Lokalizacja TOMMI INK - Nowy Sącz, Jagiellońska 29" 
+                                    src="https://maps.google.com/maps?q=Jagiello%C5%84ska%2029,%20Nowy%20S%C4%85cz&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+                                    class="w-full h-full border-0 filter grayscale invert contrast-125 opacity-85 hover:opacity-100 transition duration-300"
+                                    allowfullscreen="" 
+                                    loading="lazy">
+                                </iframe>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== FOOTER ==================== -->
+        <footer class="mt-auto bg-[#060608] border-t border-amber-500/20 py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-zinc-900">
+                    <!-- Brand (Kwadratowy emblemat zachowany bez obcinania) -->
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-xl overflow-hidden border border-amber-500/35 p-1 bg-black flex items-center justify-center">
+                            <img src="logo.png" alt="TOMMI INK" class="w-full h-full object-contain">
+                        </div>
+                        <div>
+                            <span class="font-vintage text-base font-bold text-amber-300">TOMMI INK</span>
+                            <p class="text-[10px] text-zinc-500 uppercase tracking-wider font-serif-clean">Tomasz Derza • Jagiellońska 29, Nowy Sącz</p>
+                        </div>
+                    </div>
+
+                    <!-- Social / Telefon -->
+                    <div class="flex items-center gap-4 text-xs">
+                        <a href="tel:+48607554060" class="text-zinc-400 hover:text-amber-300 transition">
+                            <i class="fa-solid fa-phone text-amber-400 mr-1.5"></i>607 554 060
+                        </a>
+                        <span class="text-zinc-700">•</span>
+                        <a href="https://www.instagram.com/tommi_ink/" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-purple-300 transition">
+                            <i class="fa-brands fa-instagram text-purple-400 mr-1.5"></i>Instagram
+                        </a>
+                    </div>
+                </div>
+
+                <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-500">
+                    <p>© 2026 TOMMI INK - Tomasz Derza. Wszelkie prawa zastrzeżone.</p>
+                    <div class="flex items-center gap-6">
+                        <a href="javascript:void(0)" onclick="openPrivacyModal()" class="hover:text-zinc-300 transition">Polityka Prywatności</a>
+                        <!-- Dyskretny link do Panelu Admina w stopce -->
+                        <a href="#admin" onclick="navigateToAdmin()" class="text-zinc-600 hover:text-amber-400/80 transition flex items-center gap-1.5 font-mono text-[11px]">
+                            <i class="fa-solid fa-lock text-[10px]"></i>
+                            <span>Panel Studia</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- ==================== WIDOK PANELU ADMINISTRATORA (#admin) ==================== -->
+    <div id="admin-view-container" class="hidden relative z-20 min-h-screen bg-[#070709] text-zinc-100 flex flex-col">
+        <!-- Górny pasek admina -->
+        <header class="bg-zinc-950 border-b border-amber-500/25 px-4 sm:px-8 py-4">
+            <div class="max-w-7xl mx-auto flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl border border-amber-500/35 p-1 bg-black flex items-center justify-center">
+                        <img src="logo.png" alt="TOMMI INK" class="w-full h-full object-contain">
+                    </div>
+                    <div>
+                        <h1 class="font-vintage text-base font-bold text-amber-300">TOMMI INK • Panel Studia</h1>
+                        <span class="text-[10px] text-zinc-500 font-mono">Zarządzanie Rezerwacjami & Kalendarz</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button onclick="navigateToClient()" class="px-3.5 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-700 text-xs text-zinc-300 transition inline-flex items-center gap-1.5">
+                        <i class="fa-solid fa-arrow-left text-[10px]"></i>
+                        <span>Powrót do strony</span>
+                    </button>
+                    <button id="admin-logout-btn" onclick="adminLogout()" class="hidden px-3.5 py-1.5 rounded-lg bg-rose-950/40 hover:bg-rose-900/50 border border-rose-500/40 text-xs text-rose-300 transition inline-flex items-center gap-1.5">
+                        <i class="fa-solid fa-right-from-bracket text-[10px]"></i>
+                        <span>Wyloguj</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Ekran logowania admina -->
+        <div id="admin-login-screen" class="flex-1 flex items-center justify-center p-4">
+            <div class="w-full max-w-md luxury-card-gold rounded-3xl p-8 border border-amber-500/30 shadow-2xl">
+                <div class="text-center mb-6">
+                    <div class="w-20 h-20 rounded-2xl border border-amber-400/45 p-2 bg-black mx-auto mb-3 shadow-[0_0_20px_rgba(212,175,55,0.2)] flex items-center justify-center">
+                        <img src="logo.png" alt="TOMMI INK" class="w-full h-full object-contain">
+                    </div>
+                    <h2 class="font-vintage text-xl font-bold text-white">Logowanie do Panelu</h2>
+                    <p class="text-xs text-zinc-400 mt-1">Dostęp autoryzowany dla właściciela studia</p>
+                </div>
+
+                <!-- Podpowiedź demo (usuwana w wersji produkcyjnej) -->
+                <div id="admin-demo-hint" class="mb-5 p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-200">
+                    <div class="font-semibold text-amber-300 mb-0.5">Dane demonstracyjne:</div>
+                    <div class="font-mono text-[11px] text-zinc-300">Login: <span class="text-white">admin@tommi-ink.pl</span></div>
+                    <div class="font-mono text-[11px] text-zinc-300">Hasło: <span class="text-white">admin123</span></div>
+                </div>
+
+                <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                    <div>
+                        <label for="admin-email-input" class="block text-xs font-semibold text-zinc-300 mb-1 uppercase font-serif-clean">E-mail</label>
+                        <input type="email" id="admin-email-input" value="admin@tommi-ink.pl" required class="w-full px-4 py-2.5 rounded-xl bg-black/70 border border-zinc-800 focus:border-amber-500 text-sm text-white">
+                    </div>
+                    <div>
+                        <label for="admin-pass-input" class="block text-xs font-semibold text-zinc-300 mb-1 uppercase font-serif-clean">Hasło</label>
+                        <input type="password" id="admin-pass-input" value="admin123" required class="w-full px-4 py-2.5 rounded-xl bg-black/70 border border-zinc-800 focus:border-amber-500 text-sm text-white">
+                    </div>
+                    <div id="admin-login-error" class="hidden text-xs text-rose-400 font-medium">
+                        Nieprawidłowy e-mail lub hasło.
+                    </div>
+                    <button type="submit" class="w-full btn-gold py-3 rounded-xl text-xs uppercase tracking-wider font-bold mt-2">
+                        Zaloguj się
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Dashboard admina (po zalogowaniu) -->
+        <main id="admin-dashboard" class="hidden flex-1 p-4 sm:p-8 max-w-7xl mx-auto w-full space-y-8">
+            
+            <!-- Statystyki górne -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="luxury-card-gold p-4 rounded-2xl">
+                    <span class="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold">Wszystkie Wizyty</span>
+                    <div id="admin-stat-total" class="font-vintage text-2xl font-bold text-white mt-1">0</div>
+                </div>
+                <div class="luxury-card-gold p-4 rounded-2xl">
+                    <span class="text-[10px] text-amber-400 uppercase tracking-wider font-semibold">Oczekujące</span>
+                    <div id="admin-stat-pending" class="font-vintage text-2xl font-bold text-amber-300 mt-1">0</div>
+                </div>
+                <div class="luxury-card-gold p-4 rounded-2xl">
+                    <span class="text-[10px] text-emerald-400 uppercase tracking-wider font-semibold">Potwierdzone</span>
+                    <div id="admin-stat-confirmed" class="font-vintage text-2xl font-bold text-emerald-400 mt-1">0</div>
+                </div>
+                <div class="luxury-card-gold p-4 rounded-2xl">
+                    <span class="text-[10px] text-zinc-400 uppercase tracking-wider font-semibold">Zrealizowane</span>
+                    <div id="admin-stat-completed" class="font-vintage text-2xl font-bold text-zinc-300 mt-1">0</div>
+                </div>
+            </div>
+
+            <!-- Tabela 1: Aktywne Rezerwacje (WRAZ Z WIDOCZNYMI UWAGAMI KLIENTA) -->
+            <div class="luxury-card-gold rounded-2xl border border-amber-500/25 p-5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                    <div>
+                        <h3 class="font-vintage text-lg font-bold text-white flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+                            <span>Aktywne Rezerwacje</span>
+                        </h3>
+                        <p class="text-xs text-zinc-400">Nadchodzące wizyty oczekujące na akceptację lub realizację.</p>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <input type="text" id="admin-search-input" oninput="filterAdminBookings()" placeholder="Szukaj po nazwisku, kodzie..." class="px-3.5 py-1.5 rounded-xl bg-black/60 border border-zinc-800 text-xs text-zinc-200 placeholder-zinc-500 focus:border-amber-400">
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-zinc-300">
+                        <thead class="bg-black/40 text-zinc-400 uppercase font-serif-clean text-[10px] border-b border-zinc-800">
+                            <tr>
+                                <th class="p-3">Kod / Data</th>
+                                <th class="p-3">Termin i Godzina</th>
+                                <th class="p-3">Klient & Kontakt</th>
+                                <th class="p-3">Styl, Opis & Uwagi</th>
+                                <th class="p-3">Inspiracja</th>
+                                <th class="p-3">Status</th>
+                                <th class="p-3 text-right">Akcje</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-active-table-body" class="divide-y divide-zinc-800/60">
+                            <!-- Renderowane z JS z widocznymi uwagami klienta -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tabela 2: Historia i Archiwum -->
+            <div class="luxury-card-gold rounded-2xl border border-zinc-800 p-5">
+                <div class="mb-4">
+                    <h3 class="font-vintage text-base font-bold text-zinc-300">
+                        Historia i Zarchiwizowane Rezerwacje
+                    </h3>
+                    <p class="text-xs text-zinc-500">Wizyty zakończone lub odwołane.</p>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-zinc-400">
+                        <thead class="bg-black/30 text-zinc-500 uppercase font-serif-clean text-[10px] border-b border-zinc-800">
+                            <tr>
+                                <th class="p-3">Kod</th>
+                                <th class="p-3">Termin</th>
+                                <th class="p-3">Klient</th>
+                                <th class="p-3">Styl & Uwagi</th>
+                                <th class="p-3">Status</th>
+                                <th class="p-3 text-right">Zarządzaj</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-history-table-body" class="divide-y divide-zinc-800/40">
+                            <!-- Renderowane z JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ==================== MODAL SUKCESU REZERWACJI ==================== -->
+    <div id="booking-success-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div class="luxury-card-gold rounded-3xl p-6 sm:p-8 max-w-md w-full border border-amber-500/40 shadow-2xl text-center space-y-4">
+            <div class="w-16 h-16 rounded-full bg-emerald-500/20 border-2 border-emerald-400/50 flex items-center justify-center text-emerald-400 text-2xl mx-auto shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                <i class="fa-solid fa-check"></i>
+            </div>
+
+            <span class="text-[10px] uppercase font-serif-clean tracking-widest text-amber-300 font-semibold">Potwierdzenie Rezerwacji</span>
+            <h3 class="font-vintage text-2xl font-bold text-white">Dziękujemy! Termin Został Zarezerwowany</h3>
+            
+            <p class="text-xs text-zinc-300 leading-relaxed">
+                Twoja rezerwacja została pomyślnie zarejestrowana w systemie studia TOMMI INK. Tomasz Derza wkrótce skontaktuje się z Tobą telefonicznie.
+            </p>
+
+            <div class="p-4 rounded-xl bg-black/60 border border-amber-500/30 text-center">
+                <span class="text-[10px] text-zinc-500 uppercase tracking-wider">Twój Unikalny Kod Wizyty</span>
+                <div id="success-booking-code" class="font-mono text-xl font-bold text-amber-300 tracking-wider mt-1">#TI-0000</div>
+            </div>
+
+            <div class="pt-2 flex flex-col gap-2">
+                <!-- Przycisk Zobacz w Panelu Admina (widoczny w trybie DEMO) -->
+                <button id="success-modal-admin-btn" onclick="openSuccessModalAdminView()" class="w-full py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-amber-500/40 text-amber-300 text-xs font-semibold transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-gauge text-xs"></i>
+                    <span>Zobacz w Panelu Admina (Demo)</span>
+                </button>
+                <button onclick="closeSuccessModal()" class="w-full btn-gold py-3 rounded-xl text-xs uppercase tracking-wider font-bold">
+                    Zamknij
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL KONTAKT W SPRAWIE STRONY (DEMO) ==================== -->
+    <div id="demo-contact-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div class="luxury-card-gold rounded-3xl p-6 sm:p-8 max-w-lg w-full border border-amber-500/40 shadow-2xl relative">
+            <button onclick="closeDemoContactModal()" class="absolute top-4 right-4 text-zinc-400 hover:text-white p-2">
+                <i class="fa-solid fa-xmark text-base"></i>
+            </button>
+
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400">
+                    <i class="fa-solid fa-code"></i>
+                </div>
+                <div>
+                    <h3 class="font-vintage text-lg font-bold text-white">Projekt Strony dla Studia</h3>
+                    <p class="text-xs text-zinc-400">Wdrożenie, opieka i dostosowanie systemu</p>
+                </div>
+            </div>
+
+            <div class="space-y-4 text-xs text-zinc-300 leading-relaxed">
+                <p>
+                    Prezentowana strona internetowa to kompletny, przejrzysty system przygotowany specjalnie dla studia <strong>TOMMI INK - Tomasz Derza</strong>.
+                </p>
+
+                <div class="p-4 rounded-xl bg-black/60 border border-zinc-800 space-y-2">
+                    <div class="font-semibold text-white">Co zawiera rozwiązanie:</div>
+                    <ul class="space-y-1 text-zinc-400 list-disc list-inside">
+                        <li>Kalendarz rezerwacji 24/7 zintegrowany z harmonogramem pracy</li>
+                        <li>Automatyczną kompresję zdjęć inspiracji i ochronę pamięci</li>
+                        <li>Prywatny panel administratora z podglądem uwag i zdjęć klientów</li>
+                        <li>Dedykowany design dark-gold z logiem studia w naturalnej formie</li>
+                    </ul>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30">
+                    <div class="text-[10px] text-amber-400 uppercase tracking-wider font-semibold mb-0.5">Kontakt z twórcą strony:</div>
+                    <div class="font-mono text-sm text-white font-bold break-all">kacperekwas1@gmail.com</div>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-end">
+                <button onclick="closeDemoContactModal()" class="btn-gold px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider font-bold">
+                    Rozumiem
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== LIGHTBOX PORTFOLIO ==================== -->
+    <div id="lightbox-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/95 backdrop-blur-xl" onclick="handleLightboxBackdrop(event)">
+        <button onclick="closeLightbox()" class="absolute top-5 right-5 text-zinc-400 hover:text-white p-3 z-50 text-xl" title="Zamknij (Esc)">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <button onclick="prevLightboxImage()" class="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-amber-300 p-3 z-50 text-2xl" title="Poprzednie zdjęcie">
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button onclick="nextLightboxImage()" class="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-amber-300 p-3 z-50 text-2xl" title="Następne zdjęcie">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
+        <div class="max-w-4xl max-h-[85vh] flex flex-col items-center justify-center p-2" onclick="event.stopPropagation()">
+            <img id="lightbox-img" src="" alt="Powiększenie pracy TOMMI INK" class="max-h-[70vh] max-w-full rounded-2xl object-contain border border-amber-500/30 shadow-2xl">
+            <div class="mt-4 text-center">
+                <h4 id="lightbox-title" class="font-vintage text-base font-bold text-white">Tytuł pracy</h4>
+                <p id="lightbox-desc" class="text-xs text-zinc-400 mt-0.5">Opis stylu i wykonania</p>
+                <span id="lightbox-counter" class="text-[11px] text-amber-400 font-mono mt-2 inline-block">1 / 4</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL PODGLĄDU ZDJĘCIA DLA ADMINA ==================== -->
+    <div id="admin-photo-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md" onclick="closeAdminPhotoModal()">
+        <div class="luxury-card-gold rounded-3xl p-6 max-w-lg w-full border border-amber-500/40 relative" onclick="event.stopPropagation()">
+            <button onclick="closeAdminPhotoModal()" class="absolute top-4 right-4 text-zinc-400 hover:text-white p-2">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h4 class="font-vintage text-base font-bold text-white mb-3">Inspiracja nadesłana przez klienta</h4>
+            <div class="w-full max-h-[60vh] overflow-hidden rounded-xl bg-black border border-zinc-800 flex items-center justify-center">
+                <img id="admin-photo-modal-img" src="" alt="Inspiracja klienta" class="max-h-[58vh] object-contain">
+            </div>
+            <div class="mt-3 text-xs text-zinc-400" id="admin-photo-modal-caption"></div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL POLITYKA PRYWATNOŚCI ==================== -->
+    <div id="privacy-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+        <div class="luxury-card-gold rounded-3xl p-6 sm:p-8 max-w-2xl w-full border border-amber-500/40 shadow-2xl max-h-[85vh] flex flex-col">
+            <div class="flex items-center justify-between pb-4 border-b border-zinc-800">
+                <h3 class="font-vintage text-lg font-bold text-white">Polityka Prywatności & RODO</h3>
+                <button onclick="closePrivacyModal()" class="text-zinc-400 hover:text-white p-2">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="overflow-y-auto py-4 text-xs text-zinc-300 space-y-3 pr-2">
+                <p><strong>1. Administrator Danych:</strong> Administratorem danych osobowych jest studio TOMMI INK - Tomasz Derza z siedzibą przy ul. Jagiellońskiej 29, 33-300 Nowy Sącz.</p>
+                <p><strong>2. Cel przetwarzania:</strong> Dane podane w formularzu rezerwacyjnym (imię, nazwisko, numer telefonu, adres e-mail, opis tatuażu, uwagi oraz zdjęcia poglądowe) przetwarzane są wyłącznie w celu umówienia terminu i kontaktu z klientem.</p>
+                <p><strong>3. Przechowywanie danych:</strong> Dane rezerwacji są przechowywane lokalnie i zabezpieczone. Klient ma w każdej chwili prawo wglądu, modyfikacji lub żądania usunięcia swoich danych.</p>
+                <p><strong>4. Kontakt:</strong> W sprawach związanych z danymi osobowymi można kontaktować się bezpośrednio pod numerem telefonu 607 554 060.</p>
+            </div>
+            <div class="pt-4 border-t border-zinc-800 flex justify-end">
+                <button onclick="closePrivacyModal()" class="btn-gold px-6 py-2.5 rounded-xl text-xs uppercase tracking-wider font-bold">
+                    Zamknij
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skrypt Główny -->
+    <script src="script.js"></script>
+</body>
+</html>
